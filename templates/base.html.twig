@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Symfony App{% endblock %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f7f7fb; color: #1e1e2f; }
+        header { background: #1f2937; color: #fff; padding: 16px 24px; }
+        header a { color: #fff; text-decoration: none; margin-right: 12px; }
+        main { padding: 24px; max-width: 1100px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+        .btn { display: inline-block; padding: 8px 14px; border-radius: 6px; background: #2563eb; color: #fff; text-decoration: none; border: none; cursor: pointer; }
+        .btn-secondary { background: #6b7280; }
+        .btn-danger { background: #dc2626; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+        .flash { padding: 10px 12px; border-radius: 6px; margin-bottom: 10px; }
+        .flash-success { background: #dcfce7; color: #166534; }
+        .flash-error { background: #fee2e2; color: #991b1b; }
+        form .field { margin-bottom: 12px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; }
+        input, select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #d1d5db; }
+        .nav-right { float: right; }
+    </style>
+</head>
+<body>
+<header>
+    {% if app.user %}
+        <a href="{{ path('app_profile') }}">Perfil</a>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_user_index') }}">Usuarios</a>
+    {% endif %}
+    <span class="nav-right">
+        {% if app.user %}
+            {{ app.user.userIdentifier }} |
+            <a href="{{ path('app_logout') }}">Salir</a>
+        {% else %}
+            <a href="{{ path('app_login') }}">Ingresar</a>
+            <a href="{{ path('app_register') }}">Registro</a>
+        {% endif %}
+    </span>
+</header>
+<main>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash flash-{{ label == 'error' ? 'error' : 'success' }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    {% block body %}{% endblock %}
+</main>
+</body>
+</html>

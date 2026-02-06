@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuario{% endblock %}
+
+{% block body %}
+<div class="card">
+    <h1>Detalle de usuario</h1>
+
+    <p><strong>ID:</strong> {{ user.id }}</p>
+    <p><strong>Nombre:</strong> {{ user.fullName }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Roles:</strong> {{ user.roles|join(', ') }}</p>
+    <p><strong>Registrado:</strong> {{ user.createdAt ? user.createdAt|date('d/m/Y H:i') : '-' }}</p>
+
+    <a class="btn" href="{{ path('admin_user_edit', {id: user.id}) }}">Editar</a>
+    <form method="post" action="{{ path('admin_user_delete', {id: user.id}) }}" style="display:inline">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+        <button class="btn btn-danger" type="submit" onclick="return confirm('¿Eliminar usuario?')">Eliminar</button>
+    </form>
+</div>
+{% endblock %}

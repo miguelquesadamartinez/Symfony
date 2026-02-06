@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar usuario{% endblock %}
+
+{% block body %}
+<div class="card">
+    <h1>Editar usuario</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.fullName) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.roles) }}
+        <button class="btn" type="submit">Guardar</button>
+        <a class="btn btn-secondary" href="{{ path('admin_user_show', {id: user.id}) }}">Volver</a>
+    {{ form_end(form) }}
+</div>
+{% endblock %}
