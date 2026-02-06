@@ -34,11 +34,11 @@ Este proyecto incluye:
 
 5. Abrir la app:
 
-- http://localhost:8080
+- http://localhost:8090
 
 6. phpMyAdmin:
 
-- http://localhost:8081
+- http://localhost:8091
     - Servidor: `mysql`
     - Usuario: `symfony`
     - Password: `symfony`

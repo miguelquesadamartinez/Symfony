@@ -1,0 +1,15 @@
+# Use the front controller as index file.
+
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # If the requested filename exists, don't do anything.
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Otherwise rewrite to the front controller.
+    RewriteRule ^ index.php [L]
+
+</IfModule>
