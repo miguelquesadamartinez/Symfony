@@ -4,16 +4,17 @@ services:
             context: .
             dockerfile: docker/php/Dockerfile
         environment:
-            APP_ENV: prod
-            APP_DEBUG: 0
+            APP_ENV: dev
+            APP_DEBUG: 1
         volumes:
-            - ./:/var/www/html:cached
-            - symfony_var:/var/www/html/var
+            - ./:/var/www/html
+            #- symfony_var:/var/www/html/var
             - symfony_vendor:/var/www/html/vendor
         ports:
             - "8090:80"
         depends_on:
-            - mysql
+            mysql:
+                condition: service_healthy
 
     mysql:
         image: mysql:8.0
@@ -22,10 +23,16 @@ services:
             MYSQL_USER: symfony
             MYSQL_PASSWORD: symfony
             MYSQL_ROOT_PASSWORD: root
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+            interval: 5s
+            timeout: 3s
+            retries: 12
+            start_period: 10s
         ports:
-            - "3306:3306"
+            - "3308:3306"
         volumes:
-            - mysql_data:/var/lib/mysql
+            - ./mysql_data:/var/lib/mysql
 
     phpmyadmin:
         image: phpmyadmin:latest
@@ -36,9 +43,10 @@ services:
         ports:
             - "8091:80"
         depends_on:
-            - mysql
+            mysql:
+                condition: service_healthy
 
 volumes:
-    mysql_data:
+    #mysql_data:
     symfony_var:
     symfony_vendor:
