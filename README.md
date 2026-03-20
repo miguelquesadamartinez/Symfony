@@ -50,11 +50,18 @@ Este proyecto incluye:
 - `/profile` Perfil del usuario autenticado
 - `/admin/users` Panel de administración de usuarios
 
+## Proceso de login
+
+1. Crear una cuenta en `/register` con email y contraseña.
+2. Iniciar sesión en `/login` usando ese email y contraseña.
+3. Tras autenticarse, se redirige al perfil (`/profile`).
+4. Para acceder a `/admin/users`, el usuario debe tener `ROLE_ADMIN`.
+
 ## Notas
 
 - El acceso a `/admin` requiere `ROLE_ADMIN`.
 - Por defecto, el primer usuario se crea con `ROLE_USER`. Para hacer un admin:
-    - En la base de datos, añade `ROLE_ADMIN` al campo `roles` del usuario, o
+    - En la base de datos, añade el permiso del usuario: UPDATE user SET roles = '[\"ROLE_ADMIN\", \"ROLE_USER\"]' WHERE id = 1;, o
     - Usa el formulario de edición en el panel admin (una vez tengas un admin).
 - Para cambiar credenciales de MySQL, ajusta `.env` y `docker-compose.yml`.
 
@@ -69,3 +76,25 @@ Este proyecto incluye:
 - `src/Controller/UserController.php`
 - `templates/` con vistas de seguridad y usuarios
 - `docker-compose.yml` y `docker/`
+
+## Log folder permisson problem
+
+- var/log
+
+```bash
+php -r "var_dump(is_writable('var/log'));"
+Remove-Item -Path "var/log" -Recurse -Force
+New-Item -Path "var/log" -ItemType Directory
+echo "*`n!.gitignore" > var/log\.gitignore
+attrib -r "var/log" /s /d
+```
+
+- var/cache
+
+```bash
+php -r "var_dump(is_writable('var/cache'));"
+Remove-Item -Path "var/cache" -Recurse -Force
+New-Item -Path "var/cache" -ItemType Directory
+echo "*`n!.gitignore" > var/cache\.gitignore
+attrib -r "var/cache" /s /d
+```
